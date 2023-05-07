@@ -29,6 +29,20 @@ def registration(db):
     return db
 
 
+def login(db):
+    login = input("Введите ваш логин: ")
+    password = input("Введите ваш пароль: ")
+    for user_data in db:
+        if user_data["login"] == login:
+            user = User(user_data["login"], user_data["password"])
+            if user.check_data(login, password):
+                print("Вы успешно авторизовались:)")
+                return user
+        else:
+            print("Некорректный логин или пароль:(")
+            return None
+
+
 class User:
     def __init__(self, login, password):
         self.__login = login
@@ -38,6 +52,10 @@ class User:
     @property
     def login(self):
         return self.__login
+
+    @property
+    def notes(self):
+        return self.__notes
 
     def check_data(self, login, password):
         if self.__login == login and self.__password == password:

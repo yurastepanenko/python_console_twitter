@@ -13,14 +13,15 @@ while True:
     choice = input("Выберите один из пунктов меню\n")
 
     if choice == '1':
-        # обновляем базу в "оператике"
+        # обновляем базу в "оперативке"
         db = registration(db)
 
         # обновляем сам файл
         write_database(db)
 
     elif choice == '2':
-        print("Авторизация")
+        current_user = login(db)
+
 
     elif choice == '0':
         print("Вы выбрали завершение работы! Удачного дня!")

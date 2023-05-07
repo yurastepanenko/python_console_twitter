@@ -30,6 +30,11 @@ def registration(db):
 
 
 def login(db):
+    """
+    функция которая позволяет пользователю залогиниться
+    :param db: наша база данных
+    :return: возвращает нашего пользователя(объект)
+    """
     login = input("Введите ваш логин: ")
     password = input("Введите ваш пароль: ")
     for user_data in db:
@@ -41,6 +46,18 @@ def login(db):
         else:
             print("Некорректный логин или пароль:(")
             return None
+
+
+def show_all_tweets(current_user):
+    print("show_all_tweets")
+
+
+def work_with_single_twit(db, current_user):
+    print("work_with_single_twit")
+
+
+def view_other_accounts(db, current_user):
+    print("view_other_accounts")
 
 
 class User:

@@ -21,7 +21,21 @@ while True:
 
     elif choice == '2':
         current_user = login(db)
+        if current_user:
+            show_menu(user_menu_actions)
+            choice = input("Выберите один из пунктов меню\n")
 
+            if choice == 1:
+                show_all_tweets(current_user)
+
+            elif choice == 2:
+                work_with_single_twit(db, current_user)
+
+            elif choice == 3:
+                view_other_accounts(db, current_user)
+
+            else:
+                print("Такого пункта меню не существует или оно в разработке:) Попробуйте еще раз!")
 
     elif choice == '0':
         print("Вы выбрали завершение работы! Удачного дня!")

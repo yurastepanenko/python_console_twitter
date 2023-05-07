@@ -1,4 +1,4 @@
-from db_presenter import write_database
+from models import user_menu_actions
 
 
 def show_menu(menu_list):
@@ -8,6 +8,18 @@ def show_menu(menu_list):
     """
     for key, value in menu_list.items():
         print(key, value)
+
+
+def data_exists(action):
+    """
+    функция для обработки ошибок
+    :param action: декорируемая функция
+    :return: выполнение функции или возврат ошибки
+    """
+    def wrapper(*args, **kwargs):
+        if args[1] is not None:
+            action(*args, **kwargs)
+    return wrapper
 
 
 def registration(db):
@@ -46,6 +58,26 @@ def login(db):
         else:
             print("Некорректный логин или пароль:(")
             return None
+
+@data_exists
+def user_actions(db, current_user):
+    while True:
+        show_menu(user_menu_actions)
+        choice = input("Выберите один из пунктов меню\n")
+        if choice == '1':
+            show_all_tweets(current_user)
+
+        elif choice == '2':
+            work_with_single_twit(db, current_user)
+
+        elif choice == '3':
+            view_other_accounts(db, current_user)
+
+        elif choice == '0':
+            break
+
+        else:
+            print("Такого пункта меню не существует или он в разработке:) Попробуйте еще раз!")
 
 
 def show_all_tweets(current_user):

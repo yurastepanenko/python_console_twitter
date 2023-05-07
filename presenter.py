@@ -81,7 +81,12 @@ def user_actions(db, current_user):
 
 
 def show_all_tweets(current_user):
-    print("show_all_tweets")
+    """
+    функция, которая вернет все заметки текущего пользователя
+    :param current_user: текущий пользователь
+    :return: ничего не возвращает
+    """
+    current_user.view_all_notes()
 
 
 def work_with_single_twit(db, current_user):
@@ -125,6 +130,19 @@ class User:
             'password': self.__password,
             'notes': self.__notes
         }
+
+    def view_all_notes(self):
+        """
+        Метод для просмотра всех заметок пользователя.
+        """
+        if self.__notes:
+            print("Список заметок:")
+            for note in self.__notes:
+                print(f"Заголовок: {note.title}")
+                print(f"Текст: {note.text}")
+                print("---")
+        else:
+            print("У вас пока нет заметок.")
 
 
 class Notes:

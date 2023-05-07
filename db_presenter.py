@@ -29,3 +29,4 @@ def write_database(data):
     """
     with open(DATA_BASE, "w") as f:
         f.write(json.dumps(data))
+

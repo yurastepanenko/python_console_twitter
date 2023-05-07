@@ -1,6 +1,8 @@
 from presenter import *
 from models import *
-from db_presenter import database_initialization, read_database, write_database
+from db_presenter import database_initialization, \
+                         read_database, \
+                         write_database
 
 while True:
     # создаем базу данных если ее не было

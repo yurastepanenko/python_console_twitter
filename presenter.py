@@ -1,3 +1,6 @@
+from db_presenter import write_database
+
+
 def show_menu(menu_list):
     """
     ф-ия , которая отображает основное меню
@@ -5,3 +8,61 @@ def show_menu(menu_list):
     """
     for key, value in menu_list.items():
         print(key, value)
+
+
+def registration(db):
+    """
+    функция которая проверяет наличие логина в базе и при его отсутствиии - регистрирует пользователя
+    :param db: наша база данных
+    :return: возвращает "обновленную базу"
+    """
+    login = input("Введите ваш логин: ")
+    password = input("Введите ваш пароль: ")
+
+    if login not in [user["login"] for user in db]:
+        user = User(login, password)
+        db.append(user.to_dict())
+        print(f"Регистрация прошла успешно! зарегистрирован пользователь: {login}")
+    else:
+        print(f"Пользователь {login} уже существует! повторите попытку!")
+
+    return db
+
+
+class User:
+    def __init__(self, login, password):
+        self.__login = login
+        self.__password = password
+        self.__notes = []
+
+    @property
+    def login(self):
+        return self.__login
+
+    def check_data(self, login, password):
+        if self.__login == login and self.__password == password:
+            return True
+        else:
+            return False
+
+    def __str__(self):
+        return self.__login
+
+    def to_dict(self):
+        """
+        метод привод объект юзера к словарю
+        :return: возвращает словарь(сконвертированного юзера)
+        """
+        return {
+            'login': self.__login,
+            'password': self.__password,
+            'notes': self.__notes
+        }
+
+
+class Notes:
+    def __init__(self):
+        self.title = input("title")
+        self.text = input("text")
+        self.ratings = []
+        self.comments = []

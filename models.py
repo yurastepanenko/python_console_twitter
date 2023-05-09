@@ -26,21 +26,21 @@ class User:
 
     __users_cache = {}
 
-    def __new__(cls, login, password):
-        # Проверяем, есть ли пользователь с таким логином в кэше
-        if login in cls.__users_cache:
-            # Если есть, возвращаем уже существующий экземпляр
-            return cls.__users_cache[login]
+    # def __new__(cls, login, password):
+    #     # Проверяем, есть ли пользователь с таким логином в кэше
+    #     if login in cls.__users_cache:
+    #         # Если есть, возвращаем уже существующий экземпляр
+    #         return cls.__users_cache[login]
+    #
+    #     # Создаем новый экземпляр
+    #     instance = super().__new__(cls)
+    #     cls.__users_cache[login] = instance
+    #     return instance
 
-        # Создаем новый экземпляр
-        instance = super().__new__(cls)
-        cls.__users_cache[login] = instance
-        return instance
-
-    def __init__(self, login, password):
+    def __init__(self, login, password, twits=None):
         self.__login = login
         self.__password = password
-        self.__twits = []
+        self.__twits = twits or []
 
     @property
     def login(self):
@@ -69,6 +69,20 @@ class User:
             'password': self.__password,
             'twits': self.__twits
         }
+
+    @classmethod
+    def from_dict(cls, user_dict):
+        """
+        Метод создает экземпляр класса User на основе словаря
+        :param user_dict: словарь с данными пользователя
+        :return: экземпляр класса User
+        """
+        login = user_dict.get('login')
+        password = user_dict.get('password')
+        twits = user_dict.get('twits')
+        return cls(login, password, twits)
+
+
 
     def show_all_tweets(self):
         """

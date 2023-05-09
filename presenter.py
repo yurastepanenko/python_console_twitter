@@ -56,13 +56,8 @@ def login(db):
 
     # Иначе ищем пользователя в базе данных
     for user_data in db:
-        print(user_data)
         if user_data["login"] == login and user_data["password"] == password:
-            # Создаем новый экземпляр пользователя
-            # user = User.__new__(User, user_data["login"], user_data["password"])
-            user = User(login, password)
-            print("Вы успешно авторизовались:)")
-            return user
+            return user_data
 
     print("Некорректный логин или пароль:(")
     return None
@@ -70,7 +65,7 @@ def login(db):
 
 @data_exists
 def user_actions(db, current_user):
-    print(db, current_user)
+    current_user = User.from_dict(current_user)
     while True:
         show_menu(user_menu_actions)
         choice = input("Выберите один из пунктов меню\n")
@@ -78,11 +73,10 @@ def user_actions(db, current_user):
             current_user.show_all_tweets()
 
         elif choice == '2':
-            print(id(current_user))
             current_user.create_new_tweet(db)
             update_user_database(db, current_user)
-            print(db)
-            db.append(current_user.to_dict())
+
+            # db.append(current_user.to_dict())
             write_database(db)
 
         elif choice == '3':

@@ -77,7 +77,7 @@ class User:
         if self.__twits:
             print("Список твитов:")
             for twit_dict in self.__twits:
-                twit = Twitt.from_dict(twit_dict)
+                twit = TwittSerializer.deserialize(twit_dict)
                 print(f"Заголовок: {twit.title}")
                 print(f"Текст: {twit.text}")
                 print("---")
@@ -94,12 +94,12 @@ class User:
         text = input("Введите текст твита: ")
         time = datetime.now()
         twit = Twitt(title, text, time)
-        self.__twits.append(twit.to_dict())
+        self.__twits.append(TwittSerializer.serialize(twit))
 
         for user_data in db:
             if user_data["login"] == self.login:
                 # Обновить список твитов пользователя
-                user_data["twits"].append(twit.to_dict())
+                user_data["twits"].append(TwittSerializer.serialize(twit))
                 write_database(db)
                 break
 
@@ -112,28 +112,32 @@ class Twitt:
         self.comments = []
         self.time = time
 
-    def to_dict(self):
+
+class TwittSerializer:
+    @staticmethod
+    def serialize(twitt):
         """
-        метод привод объект твита к словарю
-        :return: возвращает словарь(сконвертированный твит)
+        Метод преобразует объект твита в словарь.
+        :param twitt: объект твита
+        :return: словарь с данными твита
         """
         return {
-            'title': self.title,
-            'text': self.text,
-            'ratings': self.ratings,
-            'comments': self.comments,
-            'time': self.time.isoformat()
+            'title': twitt.title,
+            'text': twitt.text,
+            'ratings': twitt.ratings,
+            'comments': twitt.comments,
+            'time': twitt.time.isoformat()
         }
 
-    @classmethod
-    def from_dict(cls, twit_dict):
+    @staticmethod
+    def deserialize(twit_dict):
         """
-        Метод класса для создания экземпляра твита из словаря.
+        Метод создает экземпляр класса Twitt из словаря.
         :param twit_dict: словарь с данными твита
         :return: экземпляр класса Twitt
         """
-        return cls(
+        return Twitt(
             title=twit_dict["title"],
             text=twit_dict["text"],
             time=datetime.fromisoformat(twit_dict["time"])
-            )
+        )

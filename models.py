@@ -96,13 +96,6 @@ class User:
         twit = Twitt(title, text, time)
         self.__twits.append(TwittSerializer.serialize(twit))
 
-        for user_data in db:
-            if user_data["login"] == self.login:
-                # Обновить список твитов пользователя
-                user_data["twits"].append(TwittSerializer.serialize(twit))
-                write_database(db)
-                break
-
 
 class Twitt:
     def __init__(self, title, text, time):

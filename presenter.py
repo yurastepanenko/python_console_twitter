@@ -80,6 +80,7 @@ def user_actions(db, current_user):
         elif choice == '2':
             print(id(current_user))
             current_user.create_new_tweet(db)
+            update_user_database(db, current_user)
             print(db)
             db.append(current_user.to_dict())
             write_database(db)
@@ -132,3 +133,15 @@ def write_database(data):
         f.write(json.dumps(data))
 
 
+def update_user_database(db, user):
+    """
+    Функция для обновления базы данных пользователей после создания твита.
+    :param db: база данных пользователей
+    :param user: объект пользователя
+    """
+    for user_data in db:
+        if user_data["login"] == user.login:
+            # Обновить список твитов пользователя
+            user_data["twits"].append(user.twits[-1])
+            write_database(db)
+            break

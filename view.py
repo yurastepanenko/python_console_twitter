@@ -1,6 +1,6 @@
-from presenter import *
-from models import *
-from db_presenter import database_initialization, \
+from presenter import show_menu, registration, login, user_actions
+from models import main_menu_list
+from presenter import database_initialization, \
                          read_database, \
                          write_database
 

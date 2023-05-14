@@ -149,6 +149,25 @@ class User:
         :return: ничего не возвращает
         """
         del self.__twits[twit_number]
+        print("Твит успешно удален")
+
+    def get_avg_score(self, twit_number):
+        """
+        Метод для получения средней оценки твита.
+        :param twit_number: номер твита
+        :return: средняя оценка твита
+        """
+        twit_dict = self.__twits[twit_number]
+        twit = TwittSerializer.deserialize(twit_dict)
+        ratings = twit.ratings
+
+        if not ratings:
+            print("Твит не имеет оценок.")
+            return
+
+        avg_score = sum(ratings) / len(ratings)
+        print(f"Средняя оценка твита: {avg_score}")
+        return avg_score
 
 
 class Twitt:

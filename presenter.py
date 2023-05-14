@@ -120,11 +120,8 @@ def work_with_single_twit(db, current_user):
             current_user.delete_tweet(twit_number)
             write_database(db)
 
-
-        # elif choice == "6":
-        #     current_user.read_notes()
-        #     perform_operation(lambda note: author.notes.remove(note), author.notes)
-        #     print("Статья удалена")
+        elif choice == "3":
+            current_user.get_avg_score(twit_number)
 
         elif choice == "0":
             break

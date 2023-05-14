@@ -1,4 +1,4 @@
-from models import user_menu_actions, User
+from models import user_menu_actions, User, user_menu_twit_actions
 import json
 import os
 from models import DATA_BASE
@@ -75,8 +75,6 @@ def user_actions(db, current_user):
         elif choice == '2':
             current_user.create_new_tweet(db)
             update_user_database(db, current_user)
-
-            # db.append(current_user.to_dict())
             write_database(db)
 
         elif choice == '3':
@@ -92,12 +90,53 @@ def user_actions(db, current_user):
             print("Такого пункта меню не существует или он в разработке:) Попробуйте еще раз!")
 
 
+def get_twit_number(db, current_user):
+    """
+    Функция, которая позволяет выбрать твит пользователя
+    :param current_user: текущий пользователь
+    :param db: наша база данных
+    :return: возвращает номер твита в базе данных
+    """
+    twit_number = input("Выберите Номер твита (число)\n")
+    if twit_number.isdigit() and 0 <= int(twit_number) <= current_user.count_tweets():
+        twit_number = int(twit_number) - 1  # делаем человеческую нумерацию(так как индексы с 0)
+        print(f"Выбранный номер твита - {twit_number + 1}")
+        return twit_number
+
+
 def work_with_single_twit(db, current_user):
-    print("work_with_single_twit")
+    while True:
+        show_menu(user_menu_twit_actions)
+        choice = input("Выберите один из пунктов (введите число):\n")
+
+        if choice == "1":
+            current_user.show_all_tweets()
+            twit_number = get_twit_number(db, current_user)
+            current_user.update_tweet(twit_number)
+            write_database(db)
+
+
+
+        # elif choice == "2":
+        #     current_user.read_notes()
+        #     perform_operation(lambda note: note.update(author.create_note()), author.notes)
+        #
+        # elif choice == "6":
+        #     current_user.read_notes()
+        #     perform_operation(lambda note: author.notes.remove(note), author.notes)
+        #     print("Статья удалена")
+
+        elif choice == "0":
+            break
+
+        else:
+            print("Некорректный ввод. Попробуйте еще раз.")
+
 
 
 def view_other_accounts(db, current_user):
     print("view_other_accounts")
+
 
 def database_initialization():
     """

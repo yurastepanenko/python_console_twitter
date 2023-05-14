@@ -90,8 +90,9 @@ class User:
         """
         if self.__twits:
             print("Список твитов:")
-            for twit_dict in self.__twits:
+            for num, twit_dict in enumerate(self.__twits, 1):
                 twit = TwittSerializer.deserialize(twit_dict)
+                print(f"Номер твита: {num}")
                 print(f"Заголовок: {twit.title}")
                 print(f"Текст: {twit.text}")
                 print("---")
@@ -109,6 +110,35 @@ class User:
         time = datetime.now()
         twit = Twitt(title, text, time)
         self.__twits.append(TwittSerializer.serialize(twit))
+
+    def count_tweets(self):
+        """
+        Метод для подсчета количества твитов пользователя.
+        :return: количество твитов
+        """
+        return len(self.__twits)
+
+    def update_tweet(self, twit_number):
+        """
+        Метод для обновления твита пользователя.
+        :param db: база данных
+        :param twit_number: номер твита для обновления
+        """
+
+        twit_dict = self.__twits[twit_number]
+        twit = TwittSerializer.deserialize(twit_dict)
+
+        new_title = input("Введите новый заголовок твита: ")
+        new_text = input("Введите новый текст твита: ")
+
+        # Обновляем данные твита
+        twit.title = new_title
+        twit.text = new_text
+
+        # Преобразуем обновленный твит в словарь и заменяем его в списке твитов пользователя
+        self.__twits[twit_number] = TwittSerializer.serialize(twit)
+
+        print("Твит успешно обновлен.")
 
 
 class Twitt:

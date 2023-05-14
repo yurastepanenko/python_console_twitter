@@ -95,6 +95,7 @@ class User:
                 print(f"Номер твита: {num}")
                 print(f"Заголовок: {twit.title}")
                 print(f"Текст: {twit.text}")
+                print(f"Время: {twit.time}")
                 print("---")
         else:
             print("У вас пока нет твитов.")

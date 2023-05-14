@@ -74,11 +74,13 @@ def user_actions(db, current_user):
 
         elif choice == '2':
             current_user.create_new_tweet(db)
-            update_user_database(db, current_user)
+            # update_user_database(db, current_user)
             write_database(db)
 
         elif choice == '3':
-            work_with_single_twit(db, current_user)
+            current_user.show_all_tweets()
+            twit_number = get_twit_number(db, current_user)
+            work_with_single_twit(db, current_user, twit_number)
 
         elif choice == '4':
             view_other_accounts(db, current_user)
@@ -104,30 +106,24 @@ def get_twit_number(db, current_user):
         return twit_number
 
 
-def work_with_single_twit(db, current_user):
-    while True:
-        show_menu(user_menu_twit_actions)
-        choice = input("Выберите один из пунктов (введите число):\n")
+def work_with_single_twit(db, current_user, twit_number):
+    show_menu(user_menu_twit_actions)
+    choice = input("Выберите один из пунктов (введите число):\n")
 
-        current_user.show_all_tweets()
-        twit_number = get_twit_number(db, current_user)
+    if choice == "1":
+        current_user.update_tweet(twit_number)
+        write_database(db)
 
-        if choice == "1":
-            current_user.update_tweet(twit_number)
-            write_database(db)
 
-        elif choice == "2":
-            current_user.delete_tweet(twit_number)
-            write_database(db)
+    elif choice == "2":
+        current_user.delete_tweet(twit_number)
+        write_database(db)
 
-        elif choice == "3":
-            current_user.get_avg_score(twit_number)
 
-        elif choice == "0":
-            break
+    elif choice == "3":
+        current_user.get_avg_score(twit_number)
 
-        else:
-            print("Некорректный ввод. Попробуйте еще раз.")
+
 
 
 

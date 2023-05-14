@@ -123,6 +123,7 @@ class User:
         Метод для обновления твита пользователя.
         :param db: база данных
         :param twit_number: номер твита для обновления
+        :return: ничего не возвращает
         """
 
         twit_dict = self.__twits[twit_number]
@@ -139,6 +140,15 @@ class User:
         self.__twits[twit_number] = TwittSerializer.serialize(twit)
 
         print("Твит успешно обновлен.")
+
+    def delete_tweet(self, twit_number):
+        """
+        Метод для обновления твита пользователя.
+        :param db: база данных
+        :param twit_number: номер твита для удаления
+        :return: ничего не возвращает
+        """
+        del self.__twits[twit_number]
 
 
 class Twitt:

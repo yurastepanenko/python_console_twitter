@@ -109,18 +109,18 @@ def work_with_single_twit(db, current_user):
         show_menu(user_menu_twit_actions)
         choice = input("Выберите один из пунктов (введите число):\n")
 
+        current_user.show_all_tweets()
+        twit_number = get_twit_number(db, current_user)
+
         if choice == "1":
-            current_user.show_all_tweets()
-            twit_number = get_twit_number(db, current_user)
             current_user.update_tweet(twit_number)
             write_database(db)
 
+        elif choice == "2":
+            current_user.delete_tweet(twit_number)
+            write_database(db)
 
 
-        # elif choice == "2":
-        #     current_user.read_notes()
-        #     perform_operation(lambda note: note.update(author.create_note()), author.notes)
-        #
         # elif choice == "6":
         #     current_user.read_notes()
         #     perform_operation(lambda note: author.notes.remove(note), author.notes)

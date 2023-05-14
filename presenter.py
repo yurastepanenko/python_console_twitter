@@ -139,6 +139,24 @@ def get_all_users(db):
         print("---")
 
 
+def get_user(db, user_number):
+    """
+    Функция для выбора пользователя из базы данных по номеру.
+    :param db: база данных пользователей
+    :param user_number: номер пользователя
+    :return: объект пользователя (User) или None, если номер некорректный
+    """
+    if user_number.isdigit():
+        user_number = int(user_number)
+        if user_number < 1 or user_number > len(db):
+            print("Некорректный номер пользователя.")
+            return None
+
+    user_data = db[user_number - 1]
+    user = User.from_dict(user_data)
+    return user
+
+
 def view_other_accounts(db, current_user):
     while True:
         show_menu(accounts_menu)
@@ -147,8 +165,9 @@ def view_other_accounts(db, current_user):
             get_all_users(db)
        
         elif choice == "2":
-            pass
-        
+            user_number = input("Введите номер пользователя, которого будем просматривать\n")
+            custom_user = get_user(db, user_number)
+            print(custom_user)
         elif choice == "0":
             break
 

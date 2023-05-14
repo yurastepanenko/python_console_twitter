@@ -27,20 +27,23 @@ accounts_menu = {
             '0': 'Назад',
             }
 
+accounts_menu_detail = {
+                        '1': 'Посмотреть твиты пользователя',
+                        '2': 'Прочитать определенный твит',
+                        '0': 'Назад',
+}
+
+accounts_menu_detail_actions = {
+                        '1': 'Оставить комментарий',
+                        '2': 'Посмотреть комментарии к твиту',
+                        '3': 'Оценить твит',
+                        '0': 'Назад',
+}
+
+
 class User:
 
     __users_cache = {}
-
-    # def __new__(cls, login, password):
-    #     # Проверяем, есть ли пользователь с таким логином в кэше
-    #     if login in cls.__users_cache:
-    #         # Если есть, возвращаем уже существующий экземпляр
-    #         return cls.__users_cache[login]
-    #
-    #     # Создаем новый экземпляр
-    #     instance = super().__new__(cls)
-    #     cls.__users_cache[login] = instance
-    #     return instance
 
     def __init__(self, login, password, twits=None):
         self.__login = login
@@ -87,8 +90,6 @@ class User:
         twits = user_dict.get('twits')
         return cls(login, password, twits)
 
-
-
     def show_all_tweets(self):
         """
         Метод для просмотра всех твитов пользователя.
@@ -109,8 +110,6 @@ class User:
         """
         Метод для создания нового твита
         """
-        # Вынесено локально чтобы не было зацикливания
-        from presenter import write_database
         title = input("Введите заголовок твита: ")
         text = input("Введите текст твита: ")
         time = datetime.now()
@@ -127,7 +126,6 @@ class User:
     def update_tweet(self, twit_number):
         """
         Метод для обновления твита пользователя.
-        :param db: база данных
         :param twit_number: номер твита для обновления
         :return: ничего не возвращает
         """
@@ -150,7 +148,6 @@ class User:
     def delete_tweet(self, twit_number):
         """
         Метод для обновления твита пользователя.
-        :param db: база данных
         :param twit_number: номер твита для удаления
         :return: ничего не возвращает
         """

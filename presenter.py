@@ -1,4 +1,4 @@
-from models import user_menu_actions, User, user_menu_twit_actions
+from models import user_menu_actions, User, user_menu_twit_actions, accounts_menu
 import json
 import os
 from models import DATA_BASE
@@ -114,21 +114,43 @@ def work_with_single_twit(db, current_user, twit_number):
         current_user.update_tweet(twit_number)
         write_database(db)
 
-
     elif choice == "2":
         current_user.delete_tweet(twit_number)
         write_database(db)
-
 
     elif choice == "3":
         current_user.get_avg_score(twit_number)
 
 
+def get_all_users(db):
+    """
+    Функция для вывода всех пользователей и их нумерации.
+    :param db: база данных пользователей
+    """
+    if not db:
+        print("Нет зарегистрированных пользователей.")
+        return
 
+    print("Список пользователей:")
+    for num, user_data in enumerate(db, 1):
+        user = User.from_dict(user_data)
+        print(f"Номер пользователя: {num}")
+        print(f"Логин: {user.login}")
+        print("---")
 
 
 def view_other_accounts(db, current_user):
-    print("view_other_accounts")
+    while True:
+        show_menu(accounts_menu)
+        choice = input("Выберите один из пунктов (введите число):\n")
+        if choice == "1":
+            get_all_users(db)
+       
+        elif choice == "2":
+            pass
+        
+        elif choice == "0":
+            break
 
 
 def database_initialization():

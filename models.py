@@ -106,6 +106,25 @@ class User:
         else:
             print("У вас пока нет твитов.")
 
+    def show_single_tweet(self, twit_number):
+        """
+        Метод для просмотра одного твита.
+        :param twit_number: номер твита
+        :return ничего не возвращает
+        """
+        if twit_number < 0 or twit_number >= len(self.__twits):
+            print("Некорректный номер твита.")
+            return
+
+        twit = self.__twits[twit_number]
+        twit = TwittSerializer.deserialize(twit)
+        print(f"Информация о твите номер {twit_number + 1}:")
+        print(f"Заголовок: {twit.title}")
+        print(f"Дата: {twit.time}")
+        print(f"Текст: {twit.text}")
+        print(f"Рейтинг: {twit.ratings}")
+        print(f"Комментарии: {twit.comments}")
+
     def create_new_tweet(self, db):
         """
         Метод для создания нового твита

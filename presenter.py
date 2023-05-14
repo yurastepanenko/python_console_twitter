@@ -1,4 +1,4 @@
-from models import user_menu_actions, User, user_menu_twit_actions, accounts_menu
+from models import user_menu_actions, User, user_menu_twit_actions, accounts_menu, accounts_menu_detail
 import json
 import os
 from models import DATA_BASE
@@ -74,7 +74,6 @@ def user_actions(db, current_user):
 
         elif choice == '2':
             current_user.create_new_tweet(db)
-            # update_user_database(db, current_user)
             write_database(db)
 
         elif choice == '3':
@@ -157,6 +156,21 @@ def get_user(db, user_number):
     return user
 
 
+def work_with_other_accaunt(db, custom_user):
+    while True:
+        choice = input("Выберите действие:\n")
+        if choice == '1':
+            custom_user.show_all_tweets()
+
+        elif choice == '2':
+            custom_user.show_all_tweets()
+            twit_number = get_twit_number(db, custom_user)
+            custom_user.show_single_tweet(twit_number)
+
+        elif choice == '0':
+            break
+
+
 def view_other_accounts(db, current_user):
     while True:
         show_menu(accounts_menu)
@@ -167,7 +181,9 @@ def view_other_accounts(db, current_user):
         elif choice == "2":
             user_number = input("Введите номер пользователя, которого будем просматривать\n")
             custom_user = get_user(db, user_number)
-            print(custom_user)
+            show_menu(accounts_menu_detail)
+            work_with_other_accaunt(db, custom_user)
+            
         elif choice == "0":
             break
 

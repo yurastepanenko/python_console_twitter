@@ -1,5 +1,5 @@
 from models import user_menu_actions, User, user_menu_twit_actions, accounts_menu, accounts_menu_detail, \
-    accounts_menu_detail_actions
+    accounts_menu_detail_actions, UserSerializer
 import json
 import os
 from models import DATA_BASE
@@ -37,7 +37,7 @@ def registration(db):
 
     if login not in [user["login"] for user in db]:
         user = User(login, password)
-        db.append(user.to_dict())
+        db.append(UserSerializer.serialize(user))
         print(f"Регистрация прошла успешно! зарегистрирован пользователь: {login}")
     else:
         print(f"Пользователь {login} уже существует! повторите попытку!")
@@ -65,7 +65,7 @@ def login(db):
 
 @data_exists
 def user_actions(db, current_user):
-    current_user = User.from_dict(current_user)
+    current_user = UserSerializer.deserialize(current_user)
     while True:
         show_menu(user_menu_actions)
         choice = input("Выберите один из пунктов меню\n")

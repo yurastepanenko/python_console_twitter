@@ -172,7 +172,7 @@ class User:
             print("Твит не имеет оценок.")
             return
 
-        avg_score = sum(ratings) / len(ratings)
+        avg_score = round(sum(ratings) / len(ratings), 2)
         print(f"Средняя оценка твита: {avg_score}")
         return avg_score
 

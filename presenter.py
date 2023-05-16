@@ -128,6 +128,13 @@ def get_twit_number(db, current_user):
 
 
 def work_with_single_twit(db, current_user, twit_number):
+    """
+    функция для работы с 1 твитом
+    :param db: база данных
+    :param current_user: текущий пользователь
+    :param twit_number: номер твита
+    :return: ничего не возвращает
+    """
     show_menu(user_menu_twit_actions)
     choice = input("Выберите один из пунктов (введите число):\n")
 
@@ -224,6 +231,7 @@ def work_with_other_twit(db, custom_user, twit_number):
     :return: ничего не возвращает
     """
     while True:
+        show_menu(accounts_menu_detail_actions)
         choice = input("Выберите действие:\n")
         if choice == '1':
             # добавить комментарий
@@ -253,6 +261,7 @@ def work_with_other_account(db, custom_user):
     :return: ничего не возвращает
     """
     while True:
+        show_menu(accounts_menu_detail)
         choice = input("Выберите действие:\n")
         if choice == '1':
             custom_user.show_all_tweets()
@@ -260,9 +269,11 @@ def work_with_other_account(db, custom_user):
         elif choice == '2':
             custom_user.show_all_tweets()
             twit_number = get_twit_number(db, custom_user)
-            custom_user.show_single_tweet(twit_number)
-            show_menu(accounts_menu_detail_actions)
-            work_with_other_twit(db, custom_user, twit_number)
+            if twit_number is not None:
+                custom_user.show_single_tweet(twit_number)
+                work_with_other_twit(db, custom_user, twit_number)
+            else:
+                print("Некорректный номер твита")
 
         elif choice == '0':
             break
@@ -276,8 +287,9 @@ def processing_menu_single_account(db):
     """
     user_number = input("Введите номер пользователя, которого будем просматривать\n")
     custom_user = get_user(db, user_number)
-    show_menu(accounts_menu_detail)
-    work_with_other_account(db, custom_user)
+    if custom_user is not None:
+        show_menu(accounts_menu_detail)
+        work_with_other_account(db, custom_user)
 
 
 def processing_menu_other_accounts(db, current_user):

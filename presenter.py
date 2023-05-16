@@ -1,8 +1,12 @@
-from models import user_menu_actions, User, user_menu_twit_actions, accounts_menu, accounts_menu_detail, \
-    accounts_menu_detail_actions, UserSerializer
+from models import user_menu_actions, \
+    User, \
+    user_menu_twit_actions, \
+    accounts_menu, accounts_menu_detail, \
+    accounts_menu_detail_actions, \
+    UserSerializer, \
+    DATA_BASE
 import json
 import os
-from models import DATA_BASE
 
 
 def show_menu(menu_list):
@@ -14,16 +18,27 @@ def show_menu(menu_list):
         print(key, value)
 
 
-def data_exists(action):
+def data_exists(excluded_arg):
     """
     функция для обработки ошибок
     :param action: декорируемая функция
     :return: выполнение функции или возврат ошибки
     """
-    def wrapper(*args, **kwargs):
-        if args[1] is not None:
-            action(*args, **kwargs)
-    return wrapper
+
+    def decorator(action):
+        def wrapper(*args, **kwargs):
+            if excluded_arg not in args:
+                return action(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
+
+    # def wrapper(*args, **kwargs):
+    #     if args[1] is not None:
+    #         action(*args, **kwargs)
+    #
+    # return wrapper
 
 
 def registration(db):
@@ -63,7 +78,7 @@ def login(db):
     return None
 
 
-@data_exists
+@data_exists("current_user")
 def user_actions(db, current_user):
     """
     функция которая отображает возможные действия пользоваля и содержит работу с ними
@@ -85,14 +100,19 @@ def user_actions(db, current_user):
             write_database(db)
 
         elif choice == '3':
-            current_user.show_all_tweets()
-            twit_number = get_twit_number(db, current_user)
+            count_twits = current_user.count_tweets()
+            # раоботаем с данным пунктом меню только если есть твиты
+            if count_twits:
+                current_user.show_all_tweets()
+                twit_number = get_twit_number(db, current_user)
 
-            #  работа с определнным своим твитом
-            if twit_number is not None:
-                work_with_single_twit(db, current_user, twit_number)
+                #  работа с определнным своим твитом
+                if twit_number is not None:
+                    work_with_single_twit(db, current_user, twit_number)
+                else:
+                    print("Вы выбрали несуществующий номер твита!\n")
             else:
-                print("Вы выбрали несуществующий номер твита!\n")
+                print("У вас еще нет твитов!Работа с данным пунктом меню невозможна!\n")
 
         elif choice == '4':
             #  Работа с другими аккаунтами
@@ -241,13 +261,13 @@ def view_other_accounts(db, current_user):
         choice = input("Выберите один из пунктов (введите число):\n")
         if choice == "1":
             get_all_users(db)
-       
+
         elif choice == "2":
             user_number = input("Введите номер пользователя, которого будем просматривать\n")
             custom_user = get_user(db, user_number)
             show_menu(accounts_menu_detail)
             work_with_other_account(db, custom_user)
-            
+
         elif choice == "0":
             break
 

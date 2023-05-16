@@ -32,15 +32,15 @@ def registration(db):
     :param db: наша база данных
     :return: возвращает "обновленную базу"
     """
-    login = input("Введите ваш логин: ")
+    login_name = input("Введите ваш логин: ")
     password = input("Введите ваш пароль: ")
 
-    if login not in [user["login"] for user in db]:
-        user = User(login, password)
+    if login_name not in [user["login"] for user in db]:
+        user = User(login_name, password)
         db.append(UserSerializer.serialize(user))
-        print(f"Регистрация прошла успешно! зарегистрирован пользователь: {login}")
+        print(f"Регистрация прошла успешно! зарегистрирован пользователь: {login_name}")
     else:
-        print(f"Пользователь {login} уже существует! повторите попытку!")
+        print(f"Пользователь {login_name} уже существует! повторите попытку!")
 
     return db
 
@@ -51,12 +51,12 @@ def login(db):
     :param db: наша база данных
     :return: возвращает нашего пользователя (объект)
     """
-    login = input("Введите ваш логин: ")
+    login_name = input("Введите ваш логин: ")
     password = input("Введите ваш пароль: ")
 
     # Иначе ищем пользователя в базе данных
     for user_data in db:
-        if user_data["login"] == login and user_data["password"] == password:
+        if user_data["login"] == login_name and user_data["password"] == password:
             return user_data
 
     print("Некорректный логин или пароль:(")

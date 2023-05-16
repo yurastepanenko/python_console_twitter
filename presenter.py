@@ -76,21 +76,30 @@ def user_actions(db, current_user):
         show_menu(user_menu_actions)
         choice = input("Выберите один из пунктов меню\n")
         if choice == '1':
+            #  посмотреть все свои твиты
             current_user.show_all_tweets()
 
         elif choice == '2':
+            #  создать новый твит
             current_user.create_new_tweet(db)
             write_database(db)
 
         elif choice == '3':
             current_user.show_all_tweets()
             twit_number = get_twit_number(db, current_user)
-            work_with_single_twit(db, current_user, twit_number)
+
+            #  работа с определнным своим твитом
+            if twit_number is not None:
+                work_with_single_twit(db, current_user, twit_number)
+            else:
+                print("Вы выбрали несуществующий номер твита!\n")
 
         elif choice == '4':
+            #  Работа с другими аккаунтами
             view_other_accounts(db, current_user)
 
         elif choice == '0':
+            # выход в прошло меню
             break
 
         else:
@@ -107,7 +116,7 @@ def get_twit_number(db, current_user):
     twit_number = input("Выберите Номер твита (число)\n")
     if twit_number.isdigit() and 0 <= int(twit_number) <= current_user.count_tweets():
         twit_number = int(twit_number) - 1  # делаем человеческую нумерацию(так как индексы с 0)
-        print(f"Выбранный номер твита - {twit_number + 1}")
+        print(f"Выбранный номер твита - {twit_number + 1}\n")
         return twit_number
 
 

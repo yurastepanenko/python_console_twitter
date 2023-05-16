@@ -65,6 +65,12 @@ def login(db):
 
 @data_exists
 def user_actions(db, current_user):
+    """
+    функция которая отображает возможные действия пользоваля и содержит работу с ними
+    :param db: база данных
+    :param current_user: текущий пользователь
+    :return: ничего не возвращает
+    """
     current_user = UserSerializer.deserialize(current_user)
     while True:
         show_menu(user_menu_actions)

@@ -202,10 +202,18 @@ class Twitt:
         self.time = time
 
     def add_comment(self, comment):
+        """
+        метод для добавления комментария в твит
+        :param comment: текст комментария
+        :return: ничего не возвращает
+        """
         self.comments.append(comment)
 
 
 class TwittSerializer:
+    """
+    класс для серилиазации / десеарилизации объетов твитов
+    """
     @staticmethod
     def serialize(twitt):
         """
@@ -238,6 +246,9 @@ class TwittSerializer:
 
 
 class UserSerializer:
+    """
+    класс для серилиазации / десеарилизации объетов пользователей
+    """
     @staticmethod
     def serialize(user):
         """

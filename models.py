@@ -1,7 +1,9 @@
 from datetime import datetime
 
+# возможные оценки для ретинга
 AVAILABLE_RATING = [1, 2, 3, 4, 5]
 
+# название базы данных(наш фал json)
 DATA_BASE = 'twitter.json'
 
 main_menu_list = {'1': 'Зарегистрироваться',
@@ -44,8 +46,16 @@ accounts_menu_detail_actions = {
 
 
 class User:
-
+    """
+    Класс пользователя базы данных твиттера
+    """
     def __init__(self, login, password, twits=None):
+        """
+        метод для инициализации нового пользователя
+        :param login: Логин пользователя
+        :param password: Пароль пользователя
+        :param twits:
+        """
         self.__login = login
         self.__password = password
         self.__twits = twits or []
@@ -207,7 +217,18 @@ class User:
 
 
 class Twitt:
+    """
+    Класс самого твита
+    """
     def __init__(self, title, text, time, comments=None, ratings=None):
+        """
+        Фукция инициализации самого твита
+        :param title:
+        :param text:
+        :param time:
+        :param comments:
+        :param ratings:
+        """
         self.title = title
         self.text = text
         self.ratings = ratings if ratings is not None else []
@@ -282,7 +303,12 @@ class UserSerializer:
         :param user_dict: словарь с данными пользователя
         :return: экземпляр класса User
         """
+        if user_dict is None:
+            return
         login = user_dict.get('login')
         password = user_dict.get('password')
         twits = user_dict.get('twits')
+
+
+
         return User(login, password, twits)

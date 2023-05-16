@@ -22,6 +22,7 @@ def show_menu(menu_list):
 def data_exists(excluded_arg):
     """
     функция для обработки ошибок
+    :param excluded_arg:
     :param action: декорируемая функция
     :return: выполнение функции или возврат ошибки
     """
@@ -70,13 +71,35 @@ def login(db):
     login_name = input("Введите ваш логин: ")
     password = input("Введите ваш пароль: ")
 
-    # Иначе ищем пользователя в базе данных
+    # ищем пользователя в базе данных
     for user_data in db:
         if user_data["login"] == login_name and user_data["password"] == password:
             return user_data
 
     print("Некорректный логин или пароль:(")
     return None
+
+
+def process_menu_for_single_twit(current_user, db):
+    """
+    функция для работы с пунктом меню "работа с 1 твитом"
+    :param current_user: текущий пользователь
+    :param db: наша база данных
+    :return: ничего не возвращает
+    """
+    count_twits = current_user.count_tweets()
+    # раоботаем с данным пунктом меню только если есть твиты
+    if count_twits:
+        current_user.show_all_tweets()
+        twit_number = get_twit_number(db, current_user)
+
+        #  работа с определнным своим твитом
+        if twit_number is not None:
+            work_with_single_twit(db, current_user, twit_number)
+        else:
+            print("Вы выбрали несуществующий номер твита!\n")
+    else:
+        print("У вас еще нет твитов!Работа с данным пунктом меню невозможна!\n")
 
 
 @data_exists("current_user")
@@ -101,19 +124,7 @@ def user_actions(db, current_user):
             write_database(db)
 
         elif choice == '3':
-            count_twits = current_user.count_tweets()
-            # раоботаем с данным пунктом меню только если есть твиты
-            if count_twits:
-                current_user.show_all_tweets()
-                twit_number = get_twit_number(db, current_user)
-
-                #  работа с определнным своим твитом
-                if twit_number is not None:
-                    work_with_single_twit(db, current_user, twit_number)
-                else:
-                    print("Вы выбрали несуществующий номер твита!\n")
-            else:
-                print("У вас еще нет твитов!Работа с данным пунктом меню невозможна!\n")
+            process_menu_for_single_twit(current_user, db)
 
         elif choice == '4':
             #  Работа с другими аккаунтами

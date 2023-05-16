@@ -1,5 +1,7 @@
 from datetime import datetime
 
+AVAILABLE_RATING = [1, 2, 3, 4, 5]
+
 DATA_BASE = 'twitter.json'
 
 main_menu_list = {'1': 'Зарегистрироваться',
@@ -175,6 +177,18 @@ class User:
         twit.comments.append(comment)
         self.__twits[twit_number] = TwittSerializer.serialize(twit)
         print("Комментарий успешно добавлен.")
+
+    def add_rating_to_tweet(self, twit_number, rating):
+        """
+        Метод для добавления рейтинга к твиту.
+        :param twit_number: номер твита
+        :param rating: рейтинг
+        """
+        twit_dict = self.__twits[twit_number]
+        twit = TwittSerializer.deserialize(twit_dict)
+        twit.ratings.append(int(rating))
+        self.__twits[twit_number] = TwittSerializer.serialize(twit)
+        print("Рейтинг успешно добавлен.")
 
     def show_comments(self, twit_number):
         """

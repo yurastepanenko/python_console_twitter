@@ -4,7 +4,8 @@ from models import user_menu_actions, \
     accounts_menu, accounts_menu_detail, \
     accounts_menu_detail_actions, \
     UserSerializer, \
-    DATA_BASE
+    DATA_BASE, \
+    AVAILABLE_RATING
 import json
 import os
 
@@ -191,8 +192,41 @@ def get_user(db, user_number):
     return user
 
 
-def rate_entry():
-    pass
+def rate_entry(custom_user, twit_number, db):
+    """
+    функция для оценки записи (твита).
+    @custom_user: Объект пользователя.
+    @twit_number: Номер твита в базе данных.
+    @db: База данных твитов.
+    @:return ничего не возвращает
+    """
+    while True:
+        rating = input("Поставьте оценку от 1 до 5: ")
+        if rating.isdigit() and int(rating) in AVAILABLE_RATING:
+            twit = custom_user.show_single_tweet(twit_number)
+
+            if twit:
+                custom_user.add_rating_to_tweet(twit_number, rating)
+                write_database(db)
+                break
+        else:
+            print("Необходимо использовать для оценки значения от 1 до 5")
+
+
+def add_comment_to_twit(custom_user, twit_number, db):
+    """
+       функция для добавления комментария.
+       @custom_user: Объект пользователя.
+       @twit_number: Номер твита в базе данных.
+       @db: База данных твитов.
+       @:return ничего не возвращает
+       """
+    comment = input("Введите комментарий: ")
+    twit = custom_user.show_single_tweet(twit_number)
+
+    if twit:
+        custom_user.add_comment_to_tweet(twit_number, comment)
+        write_database(db)
 
 
 def work_with_other_twit(db, custom_user, twit_number):
@@ -206,18 +240,17 @@ def work_with_other_twit(db, custom_user, twit_number):
     while True:
         choice = input("Выберите действие:\n")
         if choice == '1':
-            comment = input("Введите комментарий: ")
-            twit = custom_user.show_single_tweet(twit_number)
-
-            if twit:
-                custom_user.add_comment_to_tweet(twit_number, comment)
-                write_database(db)
+            # добавить комментарий
+            add_comment_to_twit(custom_user, twit_number, db)
 
         elif choice == '2':
+            # Посмотреть все комментарии
             custom_user.show_comments(twit_number)
 
         elif choice == '3':
-            rate_entry()
+            # оценить и добавить комментарий
+            rate_entry(custom_user, twit_number, db)
+            add_comment_to_twit(custom_user, twit_number, db)
 
         elif choice == '0':
             break

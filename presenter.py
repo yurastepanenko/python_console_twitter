@@ -1,4 +1,5 @@
-from models import user_menu_actions, User, user_menu_twit_actions, accounts_menu, accounts_menu_detail
+from models import user_menu_actions, User, user_menu_twit_actions, accounts_menu, accounts_menu_detail, \
+    accounts_menu_detail_actions
 import json
 import os
 from models import DATA_BASE
@@ -38,7 +39,6 @@ def registration(db):
         user = User(login, password)
         db.append(user.to_dict())
         print(f"Регистрация прошла успешно! зарегистрирован пользователь: {login}")
-        print(id(user))
     else:
         print(f"Пользователь {login} уже существует! повторите попытку!")
 
@@ -74,6 +74,7 @@ def user_actions(db, current_user):
 
         elif choice == '2':
             current_user.create_new_tweet(db)
+            update_user_database(db, current_user)
             write_database(db)
 
         elif choice == '3':
@@ -156,7 +157,48 @@ def get_user(db, user_number):
     return user
 
 
-def work_with_other_accaunt(db, custom_user):
+def rate_entry():
+    pass
+
+
+def work_with_other_twit(db, custom_user, twit_number):
+    """
+    функция для работы с чужим твитом
+    :param db: база данных
+    :param custom_user: владелец твита
+    :param twit_number: твит
+    :return: ничего не возвращает
+    """
+    while True:
+        choice = input("Выберите действие:\n")
+        if choice == '1':
+            comment = input("Введите комментарий: ")
+            twit = custom_user.show_single_tweet(twit_number)
+
+            if twit:
+                custom_user.add_comment_to_tweet(db, twit_number, comment)
+                write_database(db)
+
+        elif choice == '2':
+            custom_user.show_comments(twit_number)
+
+        elif choice == '3':
+            rate_entry()
+
+        elif choice == '0':
+            break
+
+        else:
+            print("Нет такого пункта меню или он в разработке. Повторите свой выбор!")
+
+
+def work_with_other_account(db, custom_user):
+    """
+    функция для работы с конкретным аккаунтом
+    :param db: база данных
+    :param custom_user: пользователь для просмотра
+    :return: ничего не возвращает
+    """
     while True:
         choice = input("Выберите действие:\n")
         if choice == '1':
@@ -166,12 +208,20 @@ def work_with_other_accaunt(db, custom_user):
             custom_user.show_all_tweets()
             twit_number = get_twit_number(db, custom_user)
             custom_user.show_single_tweet(twit_number)
+            show_menu(accounts_menu_detail_actions)
+            work_with_other_twit(db, custom_user, twit_number)
 
         elif choice == '0':
             break
 
 
 def view_other_accounts(db, current_user):
+    """
+    функция для работы с другими пользователями
+    :param db: база данных
+    :param current_user: текущий пользователь
+    :return: ничего не возвращает
+    """
     while True:
         show_menu(accounts_menu)
         choice = input("Выберите один из пунктов (введите число):\n")
@@ -182,7 +232,7 @@ def view_other_accounts(db, current_user):
             user_number = input("Введите номер пользователя, которого будем просматривать\n")
             custom_user = get_user(db, user_number)
             show_menu(accounts_menu_detail)
-            work_with_other_accaunt(db, custom_user)
+            work_with_other_account(db, custom_user)
             
         elif choice == "0":
             break

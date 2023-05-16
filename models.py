@@ -124,6 +124,8 @@ class User:
         print(f"Текст: {twit.text}")
         print(f"Рейтинг: {twit.ratings}")
         print(f"Комментарии: {twit.comments}")
+        twit = TwittSerializer.serialize(twit)
+        return twit
 
     def create_new_tweet(self, db):
         """
@@ -191,14 +193,53 @@ class User:
         print(f"Средняя оценка твита: {avg_score}")
         return avg_score
 
+    def add_comment_to_tweet(self, db, twit_number, comment):
+        """
+        Метод для добавления комментария к твиту.
+        :param twit_number: номер твита
+        :param comment: текст комментария
+        """
+        twit_dict = self.__twits[twit_number]
+        twit = TwittSerializer.deserialize(twit_dict)
+        twit.comments.append(comment)
+        self.__twits[twit_number] = TwittSerializer.serialize(twit)
+        print("Комментарий успешно добавлен.")
+        return db
+        # twit_dict = self.__twits[twit_number]
+        # twit = TwittSerializer.deserialize(twit_dict)
+        # twit.comments.append(comment)
+        # # twit.add_comment(comment)
+        # self.__twits[twit_number] = TwittSerializer.serialize(twit)
+        # db.update_user(twit)
+
+
+
+    def show_comments(self, twit_number):
+        """
+        Метод для отображения комментариев к указанному твиту.
+        :param twit_number: номер твита
+        """
+        twit_dict = self.__twits[twit_number]
+        twit = TwittSerializer.deserialize(twit_dict)
+        comments = twit.comments
+        if comments:
+            print("Комментарии к твиту №{}:".format(twit_number))
+            for comment in comments:
+                print(comment)
+        else:
+            print("У твита №{} нет комментариев.".format(twit_number))
+
 
 class Twitt:
-    def __init__(self, title, text, time):
+    def __init__(self, title, text, time, comments=None, ratings=None):
         self.title = title
         self.text = text
-        self.ratings = []
-        self.comments = []
+        self.ratings = ratings if ratings is not None else []
+        self.comments = comments if comments is not None else []
         self.time = time
+
+    def add_comment(self, comment):
+        self.comments.append(comment)
 
 
 class TwittSerializer:
@@ -227,5 +268,7 @@ class TwittSerializer:
         return Twitt(
             title=twit_dict["title"],
             text=twit_dict["text"],
-            time=datetime.fromisoformat(twit_dict["time"])
+            time=datetime.fromisoformat(twit_dict["time"]),
+            comments = twit_dict["comments"],
+            ratings = twit_dict["ratings"]
         )

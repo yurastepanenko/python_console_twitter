@@ -23,7 +23,8 @@ while True:
 
     elif choice == '2':
         current_user = login(db)
-        user_actions(db, current_user)
+        if current_user is not None:
+            user_actions(db, current_user)
 
     elif choice == '0':
         print("Вы выбрали завершение работы! Удачного дня!")

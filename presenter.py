@@ -19,30 +19,6 @@ def show_menu(menu_list):
         print(key, value)
 
 
-def data_exists(excluded_arg):
-    """
-    функция для обработки ошибок
-    :param excluded_arg:
-    :param action: декорируемая функция
-    :return: выполнение функции или возврат ошибки
-    """
-
-    def decorator(action):
-        def wrapper(*args, **kwargs):
-            if excluded_arg not in args:
-                return action(*args, **kwargs)
-
-        return wrapper
-
-    return decorator
-
-    # def wrapper(*args, **kwargs):
-    #     if args[1] is not None:
-    #         action(*args, **kwargs)
-    #
-    # return wrapper
-
-
 def registration(db):
     """
     функция которая проверяет наличие логина в базе и при его отсутствиии - регистрирует пользователя
@@ -102,7 +78,6 @@ def process_menu_for_single_twit(current_user, db):
         print("У вас еще нет твитов!Работа с данным пунктом меню невозможна!\n")
 
 
-@data_exists("current_user")
 def user_actions(db, current_user):
     """
     функция которая отображает возможные действия пользоваля и содержит работу с ними
@@ -128,7 +103,7 @@ def user_actions(db, current_user):
 
         elif choice == '4':
             #  Работа с другими аккаунтами
-            view_other_accounts(db, current_user)
+            processing_menu_other_accounts(db, current_user)
 
         elif choice == '0':
             # выход в прошло меню
@@ -293,7 +268,19 @@ def work_with_other_account(db, custom_user):
             break
 
 
-def view_other_accounts(db, current_user):
+def processing_menu_single_account(db):
+    """
+    функция для работы с 1 аккаунтом
+    :param db: база данных
+    :return: ничего не возвращает
+    """
+    user_number = input("Введите номер пользователя, которого будем просматривать\n")
+    custom_user = get_user(db, user_number)
+    show_menu(accounts_menu_detail)
+    work_with_other_account(db, custom_user)
+
+
+def processing_menu_other_accounts(db, current_user):
     """
     функция для работы с другими пользователями
     :param db: база данных
@@ -307,10 +294,7 @@ def view_other_accounts(db, current_user):
             get_all_users(db)
 
         elif choice == "2":
-            user_number = input("Введите номер пользователя, которого будем просматривать\n")
-            custom_user = get_user(db, user_number)
-            show_menu(accounts_menu_detail)
-            work_with_other_account(db, custom_user)
+            processing_menu_single_account(db)
 
         elif choice == "0":
             break

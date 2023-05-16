@@ -98,7 +98,7 @@ class User:
         twit = TwittSerializer.serialize(twit)
         return twit
 
-    def create_new_tweet(self, db):
+    def create_new_tweet(self):
         """
         Метод для создания нового твита
         """
@@ -164,7 +164,7 @@ class User:
         print(f"Средняя оценка твита: {avg_score}")
         return avg_score
 
-    def add_comment_to_tweet(self, db, twit_number, comment):
+    def add_comment_to_tweet(self, twit_number, comment):
         """
         Метод для добавления комментария к твиту.
         :param twit_number: номер твита
@@ -175,7 +175,6 @@ class User:
         twit.comments.append(comment)
         self.__twits[twit_number] = TwittSerializer.serialize(twit)
         print("Комментарий успешно добавлен.")
-        return db
 
     def show_comments(self, twit_number):
         """
@@ -240,8 +239,8 @@ class TwittSerializer:
             title=twit_dict["title"],
             text=twit_dict["text"],
             time=datetime.fromisoformat(twit_dict["time"]),
-            comments = twit_dict["comments"],
-            ratings = twit_dict["ratings"]
+            comments=twit_dict["comments"],
+            ratings=twit_dict["ratings"]
         )
 
 

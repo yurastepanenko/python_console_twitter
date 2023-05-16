@@ -81,7 +81,7 @@ def user_actions(db, current_user):
 
         elif choice == '2':
             #  создать новый твит
-            current_user.create_new_tweet(db)
+            current_user.create_new_tweet()
             write_database(db)
 
         elif choice == '3':
@@ -167,7 +167,7 @@ def get_user(db, user_number):
             return None
 
     user_data = db[user_number - 1]
-    user = User.from_dict(user_data)
+    user = UserSerializer.deserialize(user_data)
     return user
 
 
@@ -190,7 +190,7 @@ def work_with_other_twit(db, custom_user, twit_number):
             twit = custom_user.show_single_tweet(twit_number)
 
             if twit:
-                custom_user.add_comment_to_tweet(db, twit_number, comment)
+                custom_user.add_comment_to_tweet(twit_number, comment)
                 write_database(db)
 
         elif choice == '2':

@@ -132,7 +132,7 @@ def get_all_users(db):
 
     print("Список пользователей:")
     for num, user_data in enumerate(db, 1):
-        user = User.from_dict(user_data)
+        user = UserSerializer.deserialize(user_data)
         print(f"Номер пользователя: {num}")
         print(f"Логин: {user.login}")
         print("---")

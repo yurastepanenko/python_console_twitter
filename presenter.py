@@ -141,8 +141,10 @@ def work_with_single_twit(db, current_user, twit_number):
     choice = input("Выберите один из пунктов (введите число):\n")
 
     if choice == "1":
-        current_user.update_tweet(twit_number)
-        write_database(db)
+        if twit_number is not None:
+            single_twit = current_user.get_single_tweet(twit_number)
+            single_twit.update_tweet(current_user, twit_number)
+            write_database(db)
 
     elif choice == "2":
         current_user.delete_tweet(twit_number)

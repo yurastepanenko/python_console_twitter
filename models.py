@@ -89,28 +89,6 @@ class User:
         """
         return len(self.__twits)
 
-    def update_tweet(self, twit_number):
-        """
-        Метод для обновления твита пользователя.
-        :param twit_number: номер твита для обновления
-        :return: ничего не возвращает
-        """
-
-        twit_dict = self.__twits[twit_number]
-        twit = TwittSerializer.deserialize(twit_dict)
-
-        new_title = input("Введите новый заголовок твита: ")
-        new_text = input("Введите новый текст твита: ")
-
-        # Обновляем данные твита
-        twit.title = new_title
-        twit.text = new_text
-
-        # Преобразуем обновленный твит в словарь и заменяем его в списке твитов пользователя
-        self.__twits[twit_number] = TwittSerializer.serialize(twit)
-
-        print("Твит успешно обновлен.")
-
     def delete_tweet(self, twit_number):
         """
         Метод для обновления твита пользователя.
@@ -177,6 +155,26 @@ class User:
         else:
             print("У твита №{} нет комментариев.".format(twit_number))
 
+    def update_tweet_in_list(self, updated_twit, twit_number):
+        """
+        Метод для обновления твита в списке твитов пользователя.
+        :param updated_twit: обновленный твит (объект Twitt или словарь)
+        :param twit_number: номер твита для обновления
+        :return: ничего не возвращает
+        """
+        if isinstance(updated_twit, dict):
+            updated_twit = TwittSerializer.deserialize(updated_twit)
+
+        if not isinstance(updated_twit, Twitt):
+            print("Передан некорректный формат для обновления твита.")
+            return
+
+        if twit_number < 0 or twit_number >= len(self.__twits):
+            print("Некорректный номер твита.")
+            return
+
+        self.__twits[twit_number] = TwittSerializer.serialize(updated_twit)
+
 
 class Twitt:
     """
@@ -221,7 +219,28 @@ class Twitt:
             f"Рейтинг: {self.ratings}\n"
             f"Комментарии: {self.comments}")
 
+    def update_tweet(self, user, twit_number):
+        """
+        Метод для обновления твита пользователя.
+        :param user: объект пользователя
+        :param twit_number: номер твита
+        :return: ничего не возвращает
+        """
 
+        if not user.is_valid_tweet_number(twit_number):
+            print("Некорректный номер твита.")
+            return
+
+        new_title = input("Введите новый заголовок твита: ")
+        new_text = input("Введите новый текст твита: ")
+
+        # Обновляем данные твита
+        self.title = new_title
+        self.text = new_text
+
+        user.update_tweet_in_list(self, twit_number)
+
+        print("Твит успешно обновлен.")
 
 
 class TwittSerializer:

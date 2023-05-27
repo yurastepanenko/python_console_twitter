@@ -198,7 +198,7 @@ def rate_entry(custom_user, twit_number, db):
     while True:
         rating = input("Поставьте оценку от 1 до 5: ")
         if rating.isdigit() and int(rating) in AVAILABLE_RATING:
-            twit = custom_user.show_single_tweet(twit_number)
+            twit = custom_user.get_single_tweet(twit_number)
 
             if twit:
                 custom_user.add_rating_to_tweet(twit_number, rating)
@@ -217,7 +217,7 @@ def add_comment_to_twit(custom_user, twit_number, db):
        @:return ничего не возвращает
        """
     comment = input("Введите комментарий: ")
-    twit = custom_user.show_single_tweet(twit_number)
+    twit = custom_user.get_single_tweet(twit_number)
 
     if twit:
         custom_user.add_comment_to_tweet(twit_number, comment)
@@ -272,7 +272,8 @@ def work_with_other_account(db, custom_user):
             custom_user.show_all_tweets()
             twit_number = get_twit_number(db, custom_user)
             if twit_number is not None:
-                custom_user.show_single_tweet(twit_number)
+                single_twit = custom_user.get_single_tweet(twit_number)
+                single_twit.tweet_info()
                 work_with_other_twit(db, custom_user, twit_number)
             else:
                 print("Некорректный номер твита")

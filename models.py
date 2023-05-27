@@ -47,26 +47,29 @@ class User:
         else:
             print("У вас пока нет твитов.")
 
-    def show_single_tweet(self, twit_number):
+    def is_valid_tweet_number(self, twit_number):
+        """
+        Вспомогательный метод для проверки корректности номера твита.
+        :param twit_number: номер твита
+        :return: True, если номер корректный, False в противном случае
+        """
+        if twit_number < 0 or twit_number >= len(self.__twits):
+            return False
+        return True
+
+    def get_single_tweet(self, twit_number):
         """
         Метод для просмотра одного твита.
         :param twit_number: номер твита
         :return ничего не возвращает
         """
-        if twit_number < 0 or twit_number >= len(self.__twits):
+        if not self.is_valid_tweet_number(twit_number):
             print("Некорректный номер твита.")
             return
 
         twit = self.__twits[twit_number]
         twit = TwittSerializer.deserialize(twit)
-        tweet_info = f"Информация о твите номер {twit_number + 1}:\n" \
-                     f"Заголовок: {twit.title}\n" \
-                     f"Дата: {twit.time}\n" \
-                     f"Текст: {twit.text}\n" \
-                     f"Рейтинг: {twit.ratings}\n" \
-                     f"Комментарии: {twit.comments}"
-        print(tweet_info)
-        twit = TwittSerializer.serialize(twit)
+        # twit = TwittSerializer.serialize(twit)
         return twit
 
     def create_new_tweet(self):
@@ -175,7 +178,6 @@ class User:
             print("У твита №{} нет комментариев.".format(twit_number))
 
 
-
 class Twitt:
     """
     Класс самого твита
@@ -211,6 +213,15 @@ class Twitt:
         print(f"Текст: {self.text}")
         print(f"Время: {self.time}")
         print("---")
+
+    def tweet_info(self):
+            print(f"Заголовок: {self.title}\n"
+            f"Дата: {self.time}\n"
+            f"Текст: {self.text}\n"
+            f"Рейтинг: {self.ratings}\n"
+            f"Комментарии: {self.comments}")
+
+
 
 
 class TwittSerializer:

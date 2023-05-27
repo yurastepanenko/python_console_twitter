@@ -42,11 +42,8 @@ class User:
             print("Список твитов:")
             for num, twit_dict in enumerate(self.__twits, 1):
                 twit = TwittSerializer.deserialize(twit_dict)
-                print(f"Номер твита: {num}\n"
-                      f"Заголовок: {twit.title}\n"
-                      f"Текст: {twit.text}\n"
-                      f"Время: {twit.time}\n"
-                      f"---")
+                print(f"Номер твита: {num}")
+                twit.display_tweet()
         else:
             print("У вас пока нет твитов.")
 
@@ -178,6 +175,7 @@ class User:
             print("У твита №{} нет комментариев.".format(twit_number))
 
 
+
 class Twitt:
     """
     Класс самого твита
@@ -204,6 +202,15 @@ class Twitt:
         :return: ничего не возвращает
         """
         self.comments.append(comment)
+
+    def display_tweet(self):
+        """
+        Метод для отображения информации о твите.
+        """
+        print(f"Заголовок: {self.title}")
+        print(f"Текст: {self.text}")
+        print(f"Время: {self.time}")
+        print("---")
 
 
 class TwittSerializer:

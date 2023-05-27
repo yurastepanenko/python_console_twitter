@@ -1,8 +1,13 @@
-from presenter import show_menu, registration, login, user_actions
-from models import main_menu_list
-from presenter import database_initialization, \
-                         read_database, \
-                         write_database
+from presenter import (show_menu,
+                       registration,
+                       login,
+                       user_actions)
+
+from menus import main_menu_list
+
+from presenter import (database_initialization,
+                       read_database,
+                       write_database)
 
 # создаем базу данных если ее не было
 database_initialization()
@@ -32,5 +37,3 @@ while True:
 
     else:
         print("Такого пункта меню не существует или он в разработке:) Попробуйте еще раз!")
-
-

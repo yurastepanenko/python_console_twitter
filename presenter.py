@@ -1,11 +1,13 @@
-from models import user_menu_actions, \
-    User, \
-    user_menu_twit_actions, \
-    accounts_menu, accounts_menu_detail, \
-    accounts_menu_detail_actions, \
-    UserSerializer, \
-    DATA_BASE, \
-    AVAILABLE_RATING
+from models import (User,
+                    UserSerializer,
+                    DATA_BASE,
+                    AVAILABLE_RATING)
+
+from menus import (user_menu_actions,
+                   user_menu_twit_actions,
+                   accounts_menu, accounts_menu_detail,
+                   accounts_menu_detail_actions,
+                   )
 import json
 import os
 

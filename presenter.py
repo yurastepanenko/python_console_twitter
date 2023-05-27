@@ -1,7 +1,6 @@
 from models import (User,
-                    UserSerializer,
                     DATA_BASE,
-                    AVAILABLE_RATING)
+                    AVAILABLE_RATING, UserSerializer)
 
 from menus import (user_menu_actions,
                    user_menu_twit_actions,
@@ -10,6 +9,8 @@ from menus import (user_menu_actions,
                    )
 import json
 import os
+
+
 
 
 def show_menu(menu_list):

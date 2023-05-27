@@ -11,7 +11,7 @@ class User:
     """
     Класс пользователя базы данных твиттера
     """
-    def __init__(self, login, password, twits=None):
+    def __init__(self, login, password, twits=[]):
         """
         метод для инициализации нового пользователя
         :param login: Логин пользователя
@@ -20,7 +20,7 @@ class User:
         """
         self.__login = login
         self.__password = password
-        self.__twits = twits or []
+        self.__twits = twits
 
     @property
     def login(self):

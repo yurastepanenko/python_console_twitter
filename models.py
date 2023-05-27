@@ -69,7 +69,6 @@ class User:
 
         twit = self.__twits[twit_number]
         twit = TwittSerializer.deserialize(twit)
-        # twit = TwittSerializer.serialize(twit)
         return twit
 
     def create_new_tweet(self):
@@ -97,30 +96,6 @@ class User:
         """
         del self.__twits[twit_number]
         print("Твит успешно удален")
-
-    def add_comment_to_tweet(self, twit_number, comment):
-        """
-        Метод для добавления комментария к твиту.
-        :param twit_number: номер твита
-        :param comment: текст комментария
-        """
-        twit_dict = self.__twits[twit_number]
-        twit = TwittSerializer.deserialize(twit_dict)
-        twit.comments.append(comment)
-        self.__twits[twit_number] = TwittSerializer.serialize(twit)
-        print("Комментарий успешно добавлен.")
-
-    def add_rating_to_tweet(self, twit_number, rating):
-        """
-        Метод для добавления рейтинга к твиту.
-        :param twit_number: номер твита
-        :param rating: рейтинг
-        """
-        twit_dict = self.__twits[twit_number]
-        twit = TwittSerializer.deserialize(twit_dict)
-        twit.ratings.append(int(rating))
-        self.__twits[twit_number] = TwittSerializer.serialize(twit)
-        print("Рейтинг успешно добавлен.")
 
     def show_comments(self, twit_number):
         """
@@ -184,6 +159,7 @@ class Twitt:
         :return: ничего не возвращает
         """
         self.comments.append(comment)
+        print("Комментарий успешно добавлен.")
 
     def display_tweet(self):
         """
@@ -224,24 +200,6 @@ class Twitt:
 
         print("Твит успешно обновлен.")
 
-    # def get_avg_score(self, twit_number):
-    #     """
-    #     Метод для получения средней оценки твита.
-    #     :param twit_number: номер твита
-    #     :return: средняя оценка твита
-    #     """
-    #     twit_dict = self.__twits[twit_number]
-    #     twit = TwittSerializer.deserialize(twit_dict)
-    #     ratings = twit.ratings
-    #
-    #     if not ratings:
-    #         print("Твит не имеет оценок.")
-    #         return
-    #
-    #     avg_score = round(sum(ratings) / len(ratings), 2)
-    #     print(f"Средняя оценка твита: {avg_score}")
-    #     return avg_score
-
     def get_avg_score(self):
         """
         Метод для получения средней оценки твита.
@@ -254,6 +212,22 @@ class Twitt:
         avg_score = round(sum(self.ratings) / len(self.ratings), 2)
         print(f"Средняя оценка твита: {avg_score}")
         return avg_score
+
+    def add_comment(self, comment):
+        """
+        метод для добавления комментария в твит
+        :param comment: текст комментария
+        :return: ничего не возвращает
+        """
+        self.comments.append(comment)
+
+    def add_rating_to_tweet(self, rating):
+        """
+        Метод для добавления рейтинга к твиту.
+        :param rating: рейтинг
+        """
+        self.ratings.append(int(rating))
+        print("Рейтинг успешно добавлен.")
 
 
 class TwittSerializer:

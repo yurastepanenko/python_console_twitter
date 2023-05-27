@@ -204,7 +204,7 @@ def rate_entry(custom_user, twit_number, db):
             twit = custom_user.get_single_tweet(twit_number)
 
             if twit:
-                custom_user.add_rating_to_tweet(twit_number, rating)
+                twit.add_rating_to_tweet(rating)
                 write_database(db)
                 break
         else:
@@ -223,7 +223,7 @@ def add_comment_to_twit(custom_user, twit_number, db):
     twit = custom_user.get_single_tweet(twit_number)
 
     if twit:
-        custom_user.add_comment_to_tweet(twit_number, comment)
+        twit.add_comment(comment)
         write_database(db)
 
 

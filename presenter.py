@@ -151,7 +151,8 @@ def work_with_single_twit(db, current_user, twit_number):
         write_database(db)
 
     elif choice == "3":
-        current_user.get_avg_score(twit_number)
+        single_twit = current_user.get_single_tweet(twit_number)
+        single_twit.get_avg_score()
 
 
 def get_all_users(db):
